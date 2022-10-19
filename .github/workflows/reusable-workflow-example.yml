@@ -1,0 +1,41 @@
+# このワークフローは他のワークフローから再利用されます。
+name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
+    # Map the workflow outputs to job outputs
+    outputs:
+      firstword:
+        description: "The first output string"
+        value: ${{ jobs.example_job.outputs.output1 }}
+      secondword:
+        description: "The second output string"
+        value: ${{ jobs.example_job.outputs.output2 }}
+
+jobs:
+  example_job:
+    name: 再利用のおためし
+    runs-on: ubuntu-latest
+    # Map the job outputs to step outputs
+    outputs:
+      output1: ${{ steps.step1.outputs.firstword }}
+      output2: ${{ steps.step2.outputs.secondword }}
+    steps:
+    - name: 🏃 Run actions/labeler
+      uses: actions/labeler@v4
+      with:
+        repo-token: ${{ secrets.token }}
+        configuration-path: ${{ inputs.config-path }}
+    - name: 🚀 output string1
+      id: step1
+      run: echo "firstword=こんにちは" >> $GITHUB_OUTPUT
+    - name: 🚀 output string2
+      id: step2
+      run: echo "secondword=世界" >> $GITHUB_OUTPUT
