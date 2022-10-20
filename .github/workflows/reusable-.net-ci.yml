@@ -1,0 +1,64 @@
+# このワークフローは他のワークフローから再利用されます。
+name: .NET6 Build & UnitTests Reusable workflow
+
+on:
+  workflow_call:
+    inputs:
+      runner-os:
+        description: 'Select the operating system to run.'
+        required: true
+        type: string
+      working-directory:
+        description: 'Specifies the directory containing the sln or *proj files to be built.'
+        required: true
+        type: string
+      testing-directory:
+        description: 'Specifies the directory containing the sln or *proj files to be tested.'
+        required: false
+        type: string
+      run-unittest:
+        description: 'Specifies whether or not to run UnitTest.'
+        required: false
+        type: string
+
+    secrets:
+      token:
+        required: true
+
+env:
+  CONFIGURATION: Release
+
+jobs:
+  setup:
+    name: ⚡️ OS
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.step1.outputs.os }}
+    steps:
+    - name: 🎯 Determine OS
+      id: step1
+      run: |
+        if [ ${{ inputs.runner-os }} == 'windows-latest' ]; then
+          echo "os=windows-latest" >> $GITHUB_OUTPUT
+        else
+          echo "os=ubuntu-latest" >> $GITHUB_OUTPUT
+        fi
+
+  dotnet-build-test:
+    name: ⚡️ Run .NET
+    needs: setup
+    runs-on: ${{ needs.setup.outputs.runner }}
+    steps:
+    - name: 🛒 Checkout
+      uses: actions/checkout@v3
+    - name: ✨ Setup .NET 6.0
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: 🚚 Restore
+      run: dotnet restore "${{ inputs.working-directory }}"
+    - name: 🛠️ Build
+      run: dotnet build "${{ inputs.working-directory }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: 🧪 Test
+      if: ${{ inputs.run-unittest == 'true' }}
+      run: dotnet test "${{ inputs.testing-directory }}" --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal --filter Category!=local
