@@ -1,0 +1,50 @@
+name: Call reusable-.net-ci.yml
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dotnet-build-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            osName: Linux
+          - os: windows-latest
+            osName: Windows
+    name: Test on ${{ matrix.osName }}
+    permissions:
+      contents: read
+    uses: MareMare/try-github-reusable-workflows/.github/workflows/reusable-.net-ci.yml@main
+    with:
+      runner-os: ${{ matrix.os }}
+      working-directory: src
+      testing-directory: src
+      run-unittest: 'true'
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  dotnet-build-only:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            osName: Linux
+          - os: windows-latest
+            osName: Windows
+    name: Build on ${{ matrix.osName }}
+    permissions:
+      contents: read
+    uses: MareMare/try-github-reusable-workflows/.github/workflows/reusable-.net-ci.yml@main
+    with:
+      runner-os: ${{ matrix.os }}
+      working-directory: src
+      testing-directory: src
+      run-unittest: 'false'
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
