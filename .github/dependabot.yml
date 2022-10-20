@@ -1,0 +1,23 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  # github-actions の依存関係を維持します。
+  - package-ecosystem: "github-actions" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "daily"
+      # 日本標準時 (UTC +09:00) に nuget の更新をチェックします。
+      time: "03:30"
+      timezone: "Asia/Tokyo"
+    # レビュー担当者を追加します。
+    reviewers:
+      - "MareMare"
+    # プルリクエストのラベルを指定します。
+    labels:
+      - "dependencies"
+    # バージョン更新のプルリクエストを発行します。
+    target-branch: "main"
