@@ -38,8 +38,10 @@ jobs:
     - name: 🎯 Determine OS
       id: step1
       run: |
-        if [ ${{ inputs.runner-os }} == 'windows-latest' ]; then
+        if [[ '${{ inputs.runner-os }}' == windows* ]]; then
           echo "os=windows-latest" >> $GITHUB_OUTPUT
+        elif [[ '${{ inputs.runner-os }}' == macos* ]]; then
+          echo "os=macos-latest" >> $GITHUB_OUTPUT
         else
           echo "os=ubuntu-latest" >> $GITHUB_OUTPUT
         fi
