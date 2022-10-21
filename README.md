@@ -1,5 +1,5 @@
 # try-github-reusable-workflows
- Reusing workflows のおためし
+ 🧪 Reusing workflows のおためし
 
 ## カスタムな GitHub Actions を使用する方法
 
