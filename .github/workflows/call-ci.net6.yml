@@ -1,4 +1,4 @@
-name: Call reusable-.net-ci.yml
+name: Call ci.net6.yml
 on:
   workflow_dispatch:
 
@@ -19,7 +19,7 @@ jobs:
     name: Test on ${{ matrix.osName }}
     permissions:
       contents: read
-    uses: MareMare/try-github-reusable-workflows/.github/workflows/reusable-.net-ci.yml@main
+    uses: MareMare/try-github-reusable-workflows/.github/workflows/ci.net6.yml@main
     with:
       runner-os: ${{ matrix.os }}
       working-directory: src
@@ -40,7 +40,7 @@ jobs:
     name: Build on ${{ matrix.osName }}
     permissions:
       contents: read
-    uses: MareMare/try-github-reusable-workflows/.github/workflows/reusable-.net-ci.yml@main
+    uses: MareMare/try-github-reusable-workflows/.github/workflows/ci.net6.yml@main
     with:
       runner-os: ${{ matrix.os }}
       working-directory: src
