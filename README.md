@@ -273,7 +273,52 @@ jobs:
 
 </details>
 
-
-
 <!-- リンク -->
 [jobs.<job_id>.runs-on]: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+
+## 環境変数を渡せるのか？
+直では無理ポイ。[jobs.<job_id>.outputs] に一度格納してからだと行けるらしい…
+
+<details>
+<summary><a ref='https://stackoverflow.com/a/73305536/3363518'>Stack Overflow</a> 記載の回答例:</summary>
+<div>
+
+```yml
+env:
+  SOME_VAR: bla_bla_bla
+  ANOTHER_VAR: stuff_stuff
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    outputs:
+      some_var: ${{ steps.step1.outputs.some_var }}
+      another_var: ${{ steps.step1.outputs.another_var }}   
+    steps:
+      - name: Print inputs passed to the reusable workflow
+        id: step1
+        run: |
+          echo "some var: $SOME_VAR"
+          echo "::set-output name=some_var::$SOME_VAR"
+          echo "another var: $ANOTHER_VAR"
+          echo "::set-output name=another_var::$ANOTHER_VAR"
+  
+  call_reusable:
+    needs:
+      - print
+    uses: ...
+    with:
+      input_var: ${{ needs.print.outputs.some_var }}
+      another_input_var: ${{ needs.print.outputs.another_var }}
+```
+
+</details>
+
+### 参考
+* [Passing Environment Variables to Reusable Workflow · Discussion \#26671 · community](https://github.com/orgs/community/discussions/26671)
+* [github actions \- Passing env variable inputs to a reusable workflow \- Stack Overflow](https://stackoverflow.com/a/73305536/3363518)
+
+<!-- リンク -->
+[jobs.<job_id>.outputs]: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs
+
