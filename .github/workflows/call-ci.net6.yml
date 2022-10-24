@@ -25,6 +25,7 @@ jobs:
       working-directory: src
       testing-directory: src
       run-unittest: 'true'
+      unittest-filter: 'Category!=local'
 
   dotnet-build-only:
     strategy:
@@ -44,3 +45,4 @@ jobs:
       working-directory: src
       testing-directory: src
       run-unittest: 'false'
+      unittest-filter: ''
