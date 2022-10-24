@@ -21,10 +21,6 @@ on:
         required: false
         type: string
 
-    secrets:
-      token:
-        required: true
-
 env:
   CONFIGURATION: Release
 

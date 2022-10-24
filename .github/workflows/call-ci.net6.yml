@@ -25,8 +25,6 @@ jobs:
       working-directory: src
       testing-directory: src
       run-unittest: 'true'
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
 
   dotnet-build-only:
     strategy:
@@ -46,5 +44,3 @@ jobs:
       working-directory: src
       testing-directory: src
       run-unittest: 'false'
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
