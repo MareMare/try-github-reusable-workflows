@@ -322,3 +322,11 @@ jobs:
 <!-- リンク -->
 [jobs.<job_id>.outputs]: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs
 
+## あとで試そう
+
+> **Note**
+> 
+> どうやら private repo 内のワークフローやアクションを利用できるようになったみたい。
+> * [GitHub Actions \- Sharing actions and reusable workflows from private repositories is now GA \| GitHub Changelog](https://github.blog/changelog/2022-12-14-github-actions-sharing-actions-and-reusable-workflows-from-private-repositories-is-now-ga/)
+> * [リポジトリの GitHub Actions の設定を管理する \- GitHub Docs](https://docs.github.com/ja/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository)
+>
